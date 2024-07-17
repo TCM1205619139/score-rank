@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<script>
+  /**
+   * @param {*} obj
+   * @param {*} classFunction
+   * @return {boolean}
+   */
+  var checkIfInstanceOf = function(obj, classFunction) {
+    if (obj === null || classFunction === null) return false
+    if (typeof obj === 'undefined' || typeof classFunction === 'undefined') return false
+    const objChain = Object.getPrototypeOf(obj)
+
+    const deepFind = (t, s) => {
+      if (t.constructor === s?.constructor) return true
+      else {
+        if (!Object.getPrototypeOf(t)) return false
+        return deepFind(Object.getPrototypeOf(t), s)
+      }
+    }
+
+    return deepFind(objChain, classFunction.prototype)
+  }
+
+
+  class Animal {}
+  class Dog extends Animal {}
+
+  // console.log(checkIfInstanceOf(new Date(), Date)) //true
+  // console.log(checkIfInstanceOf(new Dog(), Animal)) // true
+  // console.log(checkIfInstanceOf(Date, Date))  // false
+  // console.log(checkIfInstanceOf(5, Number)) // true
+  // console.log(checkIfInstanceOf(null, null))
+  console.log(checkIfInstanceOf({}, {}))
+  console.log(checkIfInstanceOf([], []))
+  console.log(checkIfInstanceOf(0, 0))
+</script>
+</body>
+</html>
