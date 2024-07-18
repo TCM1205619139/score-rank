@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+  /**
+   * 请你编写一个函数 fn，它接收另一个函数作为输入，并返回该函数的 记忆化 后的结果。
+   *
+   * 记忆函数 是一个对于相同的输入永远不会被调用两次的函数。相反，它将返回一个缓存值。
+   *
+   * 你可以假设有 3 个可能的输入函数：sum 、fib 和 factorial 。
+   *
+   *  sum 接收两个整型参数 a 和 b ，并返回 a + b 。假设如果参数 (b, a) 已经缓存了值，其中 a != b，它不能用于参数 (a, b)。例如，如果参数是 (3, 2) 和 (2, 3)，则应进行两个单独的调用。
+   *  fib 接收一个整型参数 n ，如果 n <= 1 则返回 1，否则返回 fib (n - 1) + fib (n - 2)。
+   *  factorial 接收一个整型参数 n ，如果 n <= 1 则返回  1 ，否则返回 factorial(n - 1) * n 。
+   */
+
+  /**
+   * @param {Function} fn
+   * @return {Function}
+   */
+  function memoize (fn) {
+    const map = new Map()
+
+    return function (...args) {
+      if (!args || args.length === 0) return
+      const key = JSON.stringify(args)
+      return map.has(key) ? map.get(key) : map.set(key,fn(...args)).get(key)
+    }
+  }
+
+  let callCount = 0
+  const memoizedFn = memoize(function (a, b) {
+    callCount += 1
+    return a + b
+  })
+  // memoizedFn(2, 3) // 5
+  // memoizedFn(2, 3) // 5
+  // memoizedFn()
+  // console.log(callCount) // 1
+  const inputs = [[748,660],[],[],[119,694],[625,645],[452,117],[623,466],[453,270],[],[777,289],[],[],[39,440],[],[32,756],[458,42],[462,913],[],[],[],[768,473],[162,910],[654,628],[],[267,423],[205,989],[],[963,401],[],[629,629],[571,242],[],[686,63],[317,102],[923,383],[866,23],[908,381],[540,344],[124,467],[553,193],[494,40],[4,63],[],[764,24],[971,583],[859,416],[],[207,203],[451,415],[328,423],[40,780],[692,602],[812,100],[823,798],[241,777],[],[],[996,394],[848,568],[541,217],[148,232],[67,40],[275,836],[947,731],[378,320],[],[675,973],[452,574],[],[]]
+  inputs.forEach((input, index) => {
+    console.log(memoizedFn(...input))
+  })
+
+</script>
+</html>
