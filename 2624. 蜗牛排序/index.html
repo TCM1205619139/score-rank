@@ -25,19 +25,20 @@
   Array.prototype.snail = function (rowsCount, colsCount) {
     if (this.length !== rowsCount * colsCount) return []
     const result = []
-    const r = []
-    for (let i = 0; i < colsCount; i++) {
-      result.push(this.slice(i*rowsCount, (i+1)*rowsCount))
-    }
-
-    for (let i = 0; i < rowsCount; i++) {
-      for (let j = 0; j < colsCount; j++) {
-        if (!r[i]) r[i] = []
-        r[i][j] = result[j][j % 2 === 0 ? i : rowsCount - i - 1]
+    for (let i=0; i<rowsCount; i++) {
+      for (let j=0; j<colsCount; j++) {
+        if (j === 0) result[i] = [this[i]]
+        else {
+          if (j % 2 === 0) {
+            result[i].push(this[rowsCount * j + i])
+          } else {
+            result[i].push(this[rowsCount * j + rowsCount - i - 1])
+          }
+        }
       }
     }
 
-    return r
+    return result
   }
 
 
