@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  class EventEmitter {
+    manager = {
+      // event: [],
+    }
+    /**
+     * @param {string} eventName
+     * @param {Function} callback
+     * @return {Object}
+     */
+    subscribe(eventName, callback) {
+      if (!this.manager[eventName]) {
+        this.manager[eventName] = []
+      }
+      const target = this.manager[eventName]
+
+      target.push(callback)
+
+      return {
+        unsubscribe: () => {
+          const index = target.findIndex(cb => {
+            return cb === callback
+          })
+
+          target.splice(index, 1)
+        }
+      }
+    }
+
+    /**
+     * @param {string} eventName
+     * @param {Array} args
+     * @return {Array}
+     */
+    emit(eventName, args = []) {
+      const target = this.manager[eventName]
+      if (!target || target.length === 0) return []
+
+      return target.map(cb => {
+        if (typeof cb === 'function') {
+          return cb(...args)
+        } else {
+          return undefined
+        }
+      }).filter(item => item !== undefined)
+    }
+  }
+
+  const emitter = new EventEmitter();
+  // const sub1 = emitter.subscribe("firstEvent", x => x + 1);
+  // const sub2 = emitter.subscribe("firstEvent", x => x + 2);
+  // sub1.unsubscribe(); // undefined
+  // console.log(emitter.emit("firstEvent", [5])) // [7]
+  const sub1 = emitter.subscribe("firstEvent", x => x + 1)
+  const sub2 = emitter.subscribe("firstEvent", x => x + 2)
+  const sub3 = emitter.subscribe("firstEvent", x => x + 3)
+  sub1.unsubscribe()
+  sub2.unsubscribe()
+  console.log(emitter.emit("firstEvent", [1]))
+  console.log(emitter.emit("firstEvent", [2]))
+</script>
+</html>
