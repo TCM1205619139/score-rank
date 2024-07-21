@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * 现给定一个对象或数组 obj，返回一个 精简对象 。
+   *
+   * 精简对象 与原始对象相同，只是将包含 假 值的键移除。该操作适用于对象及其嵌套对象。数组被视为索引作为键的对象。当 Boolean(value) 返回 false 时，值被视为 假 值。
+   *
+   * 你可以假设 obj 是 JSON.parse 的输出结果。换句话说，它是有效的 JSON。
+   */
+
+  /**
+   * @param {Object|Array} obj
+   * @return {Object|Array}
+   */
+  var compactObject = function(obj) {
+    if (obj instanceof Array) {
+      return obj.filter(Boolean).map(compactObject)
+    } else if (typeof obj === 'object' && obj !== null) {
+      return Object.keys(obj).reduce((prev, key) => {
+        const value = compactObject(obj[key])
+        if (value) prev[key] = value
+
+        return prev
+      }, {})
+    } else {
+      return obj
+    }
+  };
+
+  // console.log(compactObject([null, 0, false, 1]))
+  // console.log(compactObject({"a": null, "b": [false, 1]}))
+  console.log(compactObject([null, 0, 5, [0], [false, 16]]))
+</script>
+</html>
