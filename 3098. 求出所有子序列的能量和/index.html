@@ -51,23 +51,6 @@
       return total
     }
 
-    const get2LowerstGap = (array) => {
-      let min1 = array[0]
-      let min2 = array[1]
-      let minGap = Math.abs(min2 - min1)
-
-      for (let i = 0; i < array.length; i++) {
-        for (let j = i + 1; j < array.length; j++) {
-          if (minGap > Math.abs(array[i] - array[j])) {
-            min1 = Math.min(array[i], array[j])
-            min2 = Math.max(array[i], array[j])
-          }
-        }
-      }
-
-      return [min1, min2]
-    }
-
     const fn = (index) => {
       if (index === 0) {
         return getArrayInit2(nums.slice(0, k))

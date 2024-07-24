@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[]} nums
+   * @param {number} k
+   * @return {number[]}
+   */
+  var mostCompetitive = function (nums, k) {
+    const result = []
+
+    const findMin = (array) => {
+      let index = 0
+      let val = array[index]
+
+      array.forEach((item, idx) => {
+        if (item < val) {
+          val = item
+          index = idx
+        }
+      })
+
+      return {
+        index,
+        val,
+      }
+    }
+
+    const dfs = (array, index, path) => {
+      if (index === 0 || array.length === 0) {
+        return
+      }
+      const {
+        val: min,
+        index: idx,
+      } = findMin(array.slice(0, array.length - index + 1))
+      path.push(min)
+
+      dfs(array.slice(idx + 1), index - 1, path)
+    }
+
+    dfs(nums, k, result)
+    return result
+  }
+
+  console.log(mostCompetitive(
+    [40, 15, 97, 43, 57, 47, 47, 41, 60, 40,26],
+    11
+  ))
+</script>
+</html>
