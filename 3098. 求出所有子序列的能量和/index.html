@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  const groupBy = (array, length, inject) => {
+    const result = []
+
+    const backtrack = (start, path) => {
+      if (path.length === length) {
+        result.push([...path, inject])
+        return
+      }
+
+      for (let i = start; i < array.length; i++) {
+        path.push(array[i])
+        backtrack(i + 1, path)
+        path.pop()
+      }
+    }
+    backtrack(0, [])
+
+    return result
+  }
+
+  /**
+   * @param {number[]} nums
+   * @param {number} k
+   * @return {number}
+   */
+  var sumOfPowers = function (nums, k) {
+    nums = nums.sort((a, b) => a - b)
+    console.log(nums)
+    // 获取一个数组的以2相加的总值
+    const getArrayInit2 = (array) => {
+      let total = -1
+
+      for (let i = 0; i < array.length; i++) {
+        for (let j = i + 1; j < array.length; j++) {
+          total = total === -1
+            ? Math.abs(array[i] - array[j])
+            : Math.min(Math.abs(array[i] - array[j]), total)
+        }
+      }
+
+      return total
+    }
+
+    const get2LowerstGap = (array) => {
+      let min1 = array[0]
+      let min2 = array[1]
+      let minGap = Math.abs(min2 - min1)
+
+      for (let i = 0; i < array.length; i++) {
+        for (let j = i + 1; j < array.length; j++) {
+          if (minGap > Math.abs(array[i] - array[j])) {
+            min1 = Math.min(array[i], array[j])
+            min2 = Math.max(array[i], array[j])
+          }
+        }
+      }
+
+      return [min1, min2]
+    }
+
+    const fn = (index) => {
+      if (index === 0) {
+        return getArrayInit2(nums.slice(0, k))
+      }
+      const added = nums.slice(0, index + k - 1)
+      const last = fn(index - 1)
+      // const next = Math.min(last, Math.abs(Math.min(...added) - nums[index + k - 1]))
+      const cur = nums[index + k - 1]
+      let next = groupBy(added, k - 1, cur).reduce((prev, cur) => {
+        prev += getArrayInit2(cur)
+
+        return prev
+      }, 0)
+
+      return last + next
+    }
+
+    return fn(nums.length - k)
+  }
+
+  console.log(sumOfPowers([4,3,-1], 2))  // 10
+  console.log(sumOfPowers([-16, -13, -12, 9], 3)) // 9
+  // console.log(sumOfPowers([-24, -921, 119, -291, -65, -628, 372, 274, 962, -592, -10, 67, -977, 85, -294, 349, -119, -846, -959, -79, -877, 833, 857, 44, 826, -295, -855, 554, -999, 759, -653, -423, -599, -928], 19))
+  console.log(sumOfPowers([1,2,3, 4], 3))
+</script>
+</html>
