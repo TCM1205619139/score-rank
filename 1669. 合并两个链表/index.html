@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * Definition for singly-linked list.
+   * function ListNode(val, next) {
+   *     this.val = (val===undefined ? 0 : val)
+   *     this.next = (next===undefined ? null : next)
+   * }
+   */
+  /**
+   * @param {ListNode} list1
+   * @param {number} a
+   * @param {number} b
+   * @param {ListNode} list2
+   * @return {ListNode}
+   */
+  function ListNode(val, next) {
+    this.val = (val===undefined ? 0 : val)
+    this.next = (next===undefined ? null : next)
+  }
+
+  var mergeInBetween = function(list1, a, b, list2) {
+    let node = list1
+    let index = 0
+    let center
+
+    while (list1.next && index < a - 1) {
+      index++
+      list1 = list1.next
+    }
+    center = list1.next
+    list1.next = list2
+
+    while (list1.next) {
+      list1 = list1.next
+    }
+
+    while (index !== b) {
+      index++
+      center = center.next
+    }
+
+    list1.next = center
+
+    return node
+  };
+
+  mergeInBetween(
+    {
+      val: 1,
+      next: {
+        val: 2,
+        next: {
+          val: 3,
+          next: {
+            val: 4,
+            next: {
+              val: 5
+            }
+          }
+        }
+      }
+    },
+    3,
+    4,
+    {
+      val: 100,
+      next: {
+        val: 101,
+        next: {
+          val: 102
+        }
+      }
+    }
+  )
+</script>
+</html>
