@@ -13,46 +13,34 @@
    * @param {number} k
    * @return {number[]}
    */
-  var mostCompetitive = function (nums, k) {
-    const result = []
-
-    const findMin = (array) => {
-      let index = 0
-      let val = array[index]
-
-      array.forEach((item, idx) => {
-        if (item < val) {
-          val = item
-          index = idx
-        }
-      })
-
-      return {
-        index,
-        val,
+  var mostCompetitive = function(nums, k) {
+    const res = []
+    nums.forEach((item, index) => {
+      while (res.length > 0 && res[res.length - 1] > item && res.length + nums.length - index > k) {
+        res.pop()
       }
-    }
 
-    const dfs = (array, index, path) => {
-      if (index === 0 || array.length === 0) {
-        return
-      }
-      const {
-        val: min,
-        index: idx,
-      } = findMin(array.slice(0, array.length - index + 1))
-      path.push(min)
+      res.push(item)
+    })
 
-      dfs(array.slice(idx + 1), index - 1, path)
-    }
-
-    dfs(nums, k, result)
-    return result
+    return res.slice(0, k)
   }
 
+  // console.log(mostCompetitive(
+  //   [1,1,1,1,1,1,1,1,0,0],
+  //   5
+  // ))
   console.log(mostCompetitive(
-    [40, 15, 97, 43, 57, 47, 47, 41, 60, 40,26],
-    11
+    [1,2, 3, 1, 1,1,5],
+    3
   ))
+  console.log(mostCompetitive(
+    [5, 4, 3, 2, 1, 0],
+    3
+  ))
+  // console.log(mostCompetitive(
+  //   [2,4,3,3,5,4,9,6],
+  //   4
+  // ))
 </script>
 </html>
