@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {string} s
+   * @param {number} k
+   * @return {string}
+   */
+  var getSmallestString = function (s, k) {
+    let result = s.split('')
+
+    const getMinDis = (str) => {
+      return Math.min(str.charCodeAt() - 'a'.charCodeAt(), 'z'.charCodeAt() - str.charCodeAt() + 1)
+    }
+
+    for (let i = 0; i < s.length; i++) {
+      const minDis = getMinDis(s[i])
+      if (k < minDis) {
+        result[i] = String.fromCharCode(s[i].charCodeAt() - k)
+        break
+      }
+      result[i] = 'a'
+
+      k -= minDis
+    }
+
+    return result.join('')
+  }
+
+  console.log(getSmallestString('zbfz',60))
+</script>
+</html>
