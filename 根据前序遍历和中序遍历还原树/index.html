@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  const fn = (arr1, arr2) => {
+    const dp = (preList, midList) => {
+      if (preList.length === 0 || midList.length === 0) return null
+      const index = midList.findIndex(item => item === preList[0])
+
+      return {
+        val: preList[0],
+        left: dp(preList.slice(1, 1 + index), midList.slice(0, index)),
+        right: dp(preList.slice(index + 1, arr1.length), midList.slice(index + 1, arr2.length))
+      }
+    }
+
+    const index = arr2.findIndex(item => item === arr1[0])
+    const root = {
+      val: arr1[0],
+      left: dp(arr1.slice(1, 1 + index), arr2.slice(0, index)),
+      right: dp(arr1.slice(index + 1, arr1.length), arr2.slice(index + 1, arr2.length))
+    }
+
+    console.log(root)
+  }
+
+  fn(
+    [3, 9, 5, 6, 20, 15, 7],
+    [5, 9, 6, 3, 15, 20, 7]
+  )
+</script>
+</html>
