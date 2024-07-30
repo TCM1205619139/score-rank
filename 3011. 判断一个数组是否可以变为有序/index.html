@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[]} nums
+   * @return {boolean}
+   */
+  var canSortArray = function(nums) {
+    const isSorted = nums.every((item, index) => {
+      if (index === 0) return true
+      return item >= nums[index - 1]
+    })
+    const get1Num = (string) => {
+      return string.split('').reduce((prev, cur) => {
+        if (cur === '1') prev += 1
+        return prev
+      }, 0)
+    }
+    if (isSorted) return true
+    const groups = []
+    const bitArray = nums.map((num, index) => {
+      const bit = num.toString(2)
+      const length1 = get1Num(bit)
+
+      if (!groups.length) {
+        groups.push([
+          num
+        ])
+      } else {
+        const len = get1Num(groups[groups.length - 1][0].toString(2))
+        if (len !== length1) {
+          groups.push([num])
+        } else {
+          groups[groups.length - 1].push(num)
+        }
+      }
+
+      return bit
+    })
+
+    groups.forEach(group => {
+      group.sort((a, b) => a - b)
+    })
+
+    const flat = groups.flat()
+    console.log(groups.flat())
+
+
+    return flat.every((item, index) => {
+      if (index === 0) return true
+      return item >= flat[index - 1]
+    })
+  };
+
+  console.log(canSortArray([75,34,30]))
+  console.log(canSortArray([8,4,2,12,30,15]))
+  // console.log(canSortArray([20,16]))
+</script>
+</html>
