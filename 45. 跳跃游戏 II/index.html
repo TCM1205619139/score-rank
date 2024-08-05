@@ -13,25 +13,35 @@
    * @return {number}
    */
   var jump = function(nums) {
-    const dp = (index, step) => {
-      if (index <= 1) return index
+    let step = 0
+    const dp = (index) => {
+      if (index >= nums.length - 1) return
+      if (nums[index] + index >= nums.length - 1) {
+        step++
+        return
+      }
+      let maxValueIndex = index + 1
+      let maxValue = nums[maxValueIndex]
 
-      let preIndex
-      for (let i=1; i<=index; i++) {
-        if (nums[index - i] >= i ){
-          preIndex = i
+      for (let i=1; i<=nums[index]; i++) {
+        if (i + index >= nums.length) break
+        if (maxValue <= nums[index + i] + i) {
+          maxValueIndex = index+i
+          maxValue = nums[maxValueIndex] + i
         }
       }
 
-      return dp(index - preIndex) + 1
+      step++
+      dp(maxValueIndex)
     }
 
-    return dp(nums.length - 1, 0)
+    dp(0)
+    return step
   };
 
-  console.log(jump([2,3,1,1,4]))
-  console.log(jump([1, 2, 3]))
-  console.log(jump([0]))
-  console.log(jump([4,3,2,1]))
+  // console.log(jump([2,3,1,1,4]))
+  // console.log(jump([1, 2, 3]))
+  // console.log(jump([0]))
+  console.log(jump([2, 3, 1]))
 </script>
 </html>
