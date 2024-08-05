@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[]} nums
+   * @return {number}
+   */
+  var jump = function(nums) {
+    const dp = (index, step) => {
+      if (index <= 1) return index
+
+      let preIndex
+      for (let i=1; i<=index; i++) {
+        if (nums[index - i] >= i ){
+          preIndex = i
+        }
+      }
+
+      return dp(index - preIndex) + 1
+    }
+
+    return dp(nums.length - 1, 0)
+  };
+
+  console.log(jump([2,3,1,1,4]))
+  console.log(jump([1, 2, 3]))
+  console.log(jump([0]))
+  console.log(jump([4,3,2,1]))
+</script>
+</html>
