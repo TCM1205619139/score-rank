@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number} zero
+   * @param {number} one
+   * @param {number} limit
+   * @return {number}
+   */
+  var numberOfStableArrays = function(zero, one, limit) {
+    const MOD = 1e9 + 7
+    // const map = []
+    // for (let i=0; i<zero; i++) {
+    //   if (!map[i]) map[i] = []
+    //   for (let j=0; j<one; j++) {
+    //     map[i][j] = constructArray(i, j, limit).length % MOD
+    //   }
+    // }
+    // console.log(map)
+    const dp = (zero, one, limit) => {
+      if (zero <= 1 || one <= 1) {
+        return constructArray(zero, one, limit)
+      }
+      if (zero > one) {
+        return dp(zero-1, one, limit) + '?'
+      } else if (zero < one) {
+        return dp(zero, one-1, limit) + '?'
+      } else {
+        return dp(zero-1, one, limit) + dp(zero, one-1, limit) + '?'
+      }
+    }
+
+    // console.log(dp(zero, one, limit))
+    const array = constructArray(zero, one, limit)
+
+    return array.length % MOD
+  };
+
+
+  const constructArray = (zero, one, limit) => {
+    const result = []
+    const dfs = (zero, one, temp, latest, gap0, gap1) => {
+      if (gap0 > limit || gap1 > limit) return
+      if (zero === 0 && one === 0) {
+        result.push(temp)
+      }
+      zero > 0 && dfs(zero-1, one, [...temp, 0], 0, latest === 0 ? gap0+1 : 1, 0)
+      one > 0 && dfs(zero, one-1, [...temp, 1], 1, 0, latest === 1 ? gap1+1 : 1)
+    }
+    dfs(zero, one, [], 0, 0, 0)
+
+    return result
+  }
+
+  console.log(numberOfStableArrays(8, 8, 2))
+</script>
+</html>
