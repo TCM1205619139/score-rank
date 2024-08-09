@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[]} nums1
+   * @param {number[]} nums2
+   * @return {number}
+   */
+  var minimumAddedInteger = function(nums1, nums2) {
+    nums1.sort((a, b) => a-b)
+    nums2.sort((a, b) => a-b)
+    if (nums2.length === 1) {
+      return nums2[0] - nums1[nums1.length - 1]
+    }
+
+    let endIndex = nums1.length - 1
+    let startIndex = endIndex - 1
+    let stack = []
+    while (stack.length < nums2.length - 1 && startIndex >= 0) {
+      const eIndex = nums2.length - 1 - stack.length
+      const sIndex = eIndex - 1
+      const gap = nums2[eIndex] - nums2[sIndex]
+      const startValue = stack[stack.length - 1] === undefined ? nums1[endIndex - stack.length] : stack[stack.length - 1]
+      if (startValue - nums1[startIndex] > gap) {
+        endIndex--
+        startIndex = endIndex - 1
+        stack = []
+      } else if (startValue - nums1[startIndex] < gap) {
+        startIndex--
+      } else {
+        stack.push(nums1[startIndex])
+        startIndex--
+      }
+    }
+
+    stack.unshift(nums1[endIndex])
+    console.log(stack)
+
+
+    return nums2[nums2.length - 1] - stack[0]
+  };
+  console.log(minimumAddedInteger([9,4,3,9,4], [7, 8, 8]))
+  console.log(minimumAddedInteger([2,7,9,0,0,2,0,2,10], [1,10,3,1,3,8,1]))
+  console.log(minimumAddedInteger([7,10,9,2,5,8,1,0,4,0],[10,1,2,1,6,3,9,8]))
+  console.log(minimumAddedInteger([3,3,5,5], [7,7]))
+  console.log(minimumAddedInteger([4,6,3,1,4,2,10,9,5], [5,10,3,2,6,1,9]))
+</script>
+</html>

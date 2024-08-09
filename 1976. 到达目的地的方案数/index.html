@@ -24,40 +24,12 @@
       g[roads[i][1]][roads[i][0]] = roads[i][2]
     }
 
-    let minDis
-    const findMinDis = (position, dis) => {
-      if (minDis) return
-      if (position === n-1) {
-        minDis = dis
-        return
-      }
-      for (let i=n-1; i>position; i--) {
-        if (g[position][i] === -1) {
-          continue
-        }
-        findMinDis(i, dis+g[position][i])
-      }
-    }
-    findMinDis(0, 0)
 
-    let num = 0
-    const goTo = (from, to, length) => {
-      if (length > minDis) return
-      if (to === n-1) {
-        g[from][to] + length === minDis && num++
-        return
-      }
-      for (let i=to; i<n; i++) {
-        if (g[to][i] === -1) continue
-        goTo(to, i, length + g[from][to])
-      }
+    const disArray = new Array(n-1).fill(0)
+    for (let i=0; i<n; i++) {
+      disArray[i] = findMinDis(0, i)
     }
-    for (let i=1; i<n; i++) {
-      if (g[0][i] === -1) continue
-      goTo(0, i, 0)
-    }
-
-    return num % MOD
+    const dis =
   };
 
   console.log(countPaths(7, [[0,6,7],[0,1,2],[1,2,3],[1,3,3],[6,3,3],[3,5,1],[6,5,1],[2,5,1],[0,4,5],[4,6,2]]))
