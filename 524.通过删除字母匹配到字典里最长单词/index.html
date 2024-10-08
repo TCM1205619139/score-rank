@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  var findLongestWord = function(s, dictionary) {
+    let sums = []
+    for (let i = 0; i < dictionary.length; i++) {
+      const dict = dictionary[i]
+
+      let top = 0
+      let bot = 0
+
+      while (top < s.length && bot < dict.length) {
+        if (s[top] === dict[bot]) {
+          bot++
+        }
+        top++
+      }
+      if (bot === dict.length) {
+        sums.push(dict)
+      }
+    }
+
+    const res = sums.reduce((prev, cur) => {
+      if (prev.length < cur.length) {
+        prev = cur
+      }
+      if (prev.length === cur.length) {
+        prev = prev < cur ? prev : cur
+      }
+
+      return prev
+    }, sums[0] || '')
+
+    console.log(res)
+    return res
+  };
+
+  // findLongestWord("abpclpea", ["ale","apple","monkey","plea"])
+  findLongestWord("abpclpea", ["a","b","c"])
+</script>
+</html>
