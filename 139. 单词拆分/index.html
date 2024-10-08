@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {string} s
+   * @param {string[]} wordDict
+   * @return {boolean}
+   */
+  var wordBreak = function(s, wordDict) {
+    const dp = new Array(s.length).fill(false)
+
+    dp[0] = true
+    for (let i = 1; i <= s.length; i++) {
+      for (let j = 0; j < i; j++) {
+        if (wordDict.includes(s.slice(j, i)) && dp[j]) {
+          dp[i] = true
+        }
+      }
+    }
+
+    return dp[s.length] || false
+  };
+
+  // wordBreak("leetcode", ["leet","code"])
+  wordBreak("catsandog", ["cats","dog","sand","and","cat"])
+</script>
+</html>

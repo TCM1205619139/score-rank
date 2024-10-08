@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+
+
+  /**
+   * @param {number[]} nums
+   * @return {number}
+   */
+  var removeDuplicates = function(nums) {
+    let slow = 0
+    let fast = slow + 1
+    let length = nums.length
+    while (fast < nums.length - 1) {
+      if (nums[slow] === nums[fast]) {
+        if (fast - slow > 1) {
+          length--
+        } else {
+
+        }
+
+        fast++
+      } else {
+        slow = fast
+        fast++
+      }
+    }
+
+    return length
+  };
+
+  console.log(removeDuplicates([1,1,1,2,2,3]))
+  console.log(removeDuplicates([0,0,1,1,1,1,2,3,3]))
+</script>
+</html>

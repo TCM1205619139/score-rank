@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[]} nums
+   * @return {number}
+   */
+  var deleteAndEarn = function(nums) {
+    nums.sort((a, b) => a-b)
+    const map = {}
+    const sums = []
+
+    nums.forEach(v => {
+      map[v] =  map[v] || 0
+      map[v]++
+    })
+
+    for (const value in map) {
+      sums.push(value * map[value])
+    }
+
+    console.log(sums)
+    if(sums.length <= 2) return sums[sums.length-1]
+
+    const dp = new Array(sums.length).fill(0)
+
+    dp[0] = sums[0]
+    dp[1] = sums[1]
+    for (let i = 2; i < sums.length; i++) {
+      dp[i] = Math.max(dp[i-1], dp[i-2] + sums[i])
+    }
+    console.log(dp)
+    return dp[dp.length-1]
+  };
+
+  // deleteAndEarn([2,2,3,3,3,4])
+  // deleteAndEarn([3,4,2])
+  deleteAndEarn([3,1])
+</script>
+</html>

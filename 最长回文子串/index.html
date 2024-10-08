@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {string} s
+   * @return {string}
+   */
+  var longestPalindrome = function(s) {
+    if (s.length < 2) return s
+    const dp = new Array(s.length).fill(0).map(item => new Array(s.length).fill(false))
+
+    for (let i = 0; i < s.length; i++) {
+      dp[i][i] = true
+    }
+    let maxLen = 1
+    let maxStart = 0
+    let maxEnd = 0
+
+    for (let j = 1; j < s.length; j++) {
+      for (let i = 0; i < j; i++) {
+        if (s[i] === s[j] && (dp[i+1][j-1] || j-i<=2)) {
+          dp[i][j] = true
+          if (j-i+1 > maxLen) {
+            maxLen = j-i + 1
+            maxStart = i
+            maxEnd = j
+          }
+        }
+      }
+    }
+    console.log(maxStart, maxEnd)
+  };
+
+  longestPalindrome("aabaa")
+</script>
+</html>
