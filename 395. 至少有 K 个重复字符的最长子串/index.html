@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {string} s
+   * @param {number} k
+   * @return {number}
+   */
+  var longestSubstring = function(s, k) {
+    let maxLen = 0
+
+    const isLegal = (obj) => {
+      return Object.values(obj).every(v => {
+        return v >= k || v <= 0
+      })
+    }
+
+    outer: for (let len = s.length; len >= k; len--) {
+
+      let l = 0
+      let r = len - 1
+
+      while (r < s.length) {
+        let hashMap = Object.create(null)
+        for (let i=l; i<=r; i++) {
+          if (!hashMap[s[i]]) {
+            hashMap[s[i]] = 0
+          }
+          hashMap[s[i]]++
+        }
+        if (isLegal(hashMap)) {
+          maxLen = Math.max(maxLen, len)
+          break outer
+        }
+        hashMap[s[l]]--
+        l++
+        hashMap[s[r]]++
+        r++
+      }
+    }
+    console.log(maxLen)
+
+    return maxLen
+  };
+
+  longestSubstring("aaaaaa", 3)
+  longestSubstring('weitong', 2)
+</script>
+</html>
