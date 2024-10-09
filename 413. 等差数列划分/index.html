@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[]} nums
+   * @return {number}
+   */
+  var numberOfArithmeticSlices = function (nums) {
+    if (nums.length <= 2) return 0
+    let l = 0
+    let r = 2
+    let num = 0
+    let gap = nums[1] - nums[0]
+
+    while (r < nums.length) {
+      const tmp = nums[r] - nums[r - 1];  // 当前元素与前一个元素的差值
+      if (tmp === gap) {
+        // 如果差值相同，则扩展窗口
+        num += (r - l - 1);  // 每扩展一步，都意味着多了一个新的等差子数组
+        r++;
+      } else {
+        // 差值不相同时，重置窗口
+        l = r - 1;  // 左指针移动到不等差的地方
+        gap = nums[r] - nums[l];  // 更新新的等差值
+        r++;
+      }
+    }
+
+    return num
+  }
+
+  numberOfArithmeticSlices([1, 2, 3, 4, 5, 5, 5])
+</script>
+</html>
