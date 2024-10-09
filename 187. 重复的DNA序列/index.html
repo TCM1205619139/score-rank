@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {string} s
+   * @return {string[]}
+   */
+  var findRepeatedDnaSequences = function(s) {
+    const obj = Object.create(null)
+
+    let l = 0
+    let r = 9
+
+    while (r < s.length) {
+      const str = s.slice(l, r+1)
+      if(!obj[str]) {
+        obj[str] = 0
+      }
+      obj[str]++
+      r++
+      l++
+    }
+
+    const result = Object.keys(obj).filter((k, v) => {
+      return obj[k] >= 2
+    })
+    console.log(result)
+
+    return result
+  };
+
+  findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT")
+</script>
+</html>
