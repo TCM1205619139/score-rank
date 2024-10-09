@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {string} s
+   * @param {string} p
+   * @return {number[]}
+   */
+  var findAnagrams = function(s, p) {
+    let l = 0
+    let r = p.length - 1
+    const dictP = {}
+    const result = []
+
+    for (let i=0; i<p.length; i++) {
+      const chart = p[i]
+      dictP[chart] = (dictP[chart] || 0) + 1
+    }
+
+    while (r < s.length) {
+      const str = s.slice(l, r + 1)
+
+      const dict = {}
+
+      for (let i=0; i<str.length; i++) {
+        const chart = str[i]
+        dict[chart] = (dict[chart] || 0) + 1
+      }
+
+
+      const flag = str.split('').every(c => {
+        return dictP[c] === dict[c]
+      })
+
+      flag && result.push(l)
+
+      r++
+      l++
+    }
+
+    console.log(result)
+    return result
+  };
+
+  findAnagrams("cbaebabacd", "abc")
+</script>
+</html>
