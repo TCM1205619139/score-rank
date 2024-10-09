@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  var findKthLargest = function (nums, k) {
+    const min = Math.min(...nums)
+    const gap = min < 0 ? -min : 0
+    const obj = Object.create(null)
+    let index = k
+
+    nums.forEach(v => {
+      const key = v+gap
+      if (obj[key] === undefined) {
+        obj[key] = 0
+      }
+      obj[key]++
+    })
+
+    const keys = Object.keys(obj)
+    const length = keys.length
+
+    let result
+
+    for (let i = length - 1; i >= length - index; i--) {
+      const key = keys[i]
+      const time = obj[key]
+      k-=time
+      if (k <= 0) {
+        result = key - gap
+        break
+      }
+    }
+    console.log(result)
+    return result
+  };
+
+  const source = [-1,-1]
+  findKthLargest(source, 2)
+</script>
+</html>
