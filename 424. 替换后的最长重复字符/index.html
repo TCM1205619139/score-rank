@@ -27,18 +27,19 @@
       maxCount = Math.max(maxCount, dict[char])
 
       while (r-l+1 - maxCount > k) {
-        l++
         dict[s[l]]--
+        l++
       }
 
       maxLen = Math.max(maxLen, r-l+1)
       r++
     }
 
+    console.log(maxLen)
     return maxLen
   };
 
-  characterReplacement("AABABBA", 1)
-  // characterReplacement("ABAB", 2)
+  // characterReplacement("AABABBA", 1)
+  characterReplacement("ABAB", 0)
 </script>
 </html>
