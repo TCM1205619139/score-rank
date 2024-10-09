@@ -17,9 +17,22 @@
    * @return {number[]}
    */
   var findAnagrams = function(s, p) {
+    const isEqual = (dict1, dict2) => {
+      if (Object.keys(dict1).length !== Object.keys(dict2).length) {
+        return false;
+      }
+      for (let key in dict1) {
+        if (dict1[key] !== dict2[key]) {
+          return false;
+        }
+      }
+      return true;
+    }
+
     let l = 0
-    let r = p.length - 1
+    let r = 0
     const dictP = {}
+    const dict = {}
     const result = []
 
     for (let i=0; i<p.length; i++) {
@@ -28,24 +41,23 @@
     }
 
     while (r < s.length) {
-      const str = s.slice(l, r + 1)
+      const char = s[r]
+      dict[char] = (dict[char] || 0) + 1
 
-      const dict = {}
-
-      for (let i=0; i<str.length; i++) {
-        const chart = str[i]
-        dict[chart] = (dict[chart] || 0) + 1
+      if (r-l+1 > p.length) {
+        dict[s[l]]--
+        if (dict[s[l]] === 0) {
+          delete dict[s[l]]
+        }
+        l++
       }
 
-
-      const flag = str.split('').every(c => {
-        return dictP[c] === dict[c]
-      })
-
-      flag && result.push(l)
-
+      if (r-l+1 === p.length) {
+        if (isEqual(dict, dictP)) {
+          result.push(l)
+        }
+      }
       r++
-      l++
     }
 
     console.log(result)

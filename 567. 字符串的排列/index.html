@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {string} s1
+   * @param {string} s2
+   * @return {boolean}
+   */
+  var checkInclusion = function(s2, s1) {
+    const isEqual = (dict1, dict2) => {
+      if (Object.keys(dict1).length !== Object.keys(dict2).length) {
+        return false;
+      }
+      for (let key in dict1) {
+        if (dict1[key] !== dict2[key]) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    let l = 0
+    let r = 0
+    let dict = Object.create(null)
+    let dict2 = Object.create(null)
+    let flag = false
+
+    for (let i = 0; i < s2.length; i++) {
+      const char = s2[i]
+
+      dict2[char] = (dict2[char] || 0) + 1
+    }
+
+    while (r < s1.length) {
+      const char = s1[r]
+
+      dict[char] = (dict[char] || 0) + 1
+
+      if (r-l+1 > s2.length) {
+        if (!dict[s1[l]]) continue
+        dict[s1[l]]--
+        if (!dict[s1[l]]) {
+          delete dict[s1[l]]
+        }
+        l++
+      }
+
+      if (r-l+1 === s2.length) {
+        if (isEqual(dict, dict2)) {
+          flag = true
+          break
+        }
+      }
+      r++
+    }
+
+    console.log(flag)
+    return flag
+  };
+
+  checkInclusion('ab', "eidbaooo")
+</script>
+</html>
