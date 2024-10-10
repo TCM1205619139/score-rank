@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number} n
+   * @return {string[]}
+   */
+  var generateParenthesis = function(n) {
+    const dict = ['(', ')']
+    const result = []
+
+    const dfs = (temp, left, right) => {
+      if (right > left) return
+      if (left === n && right === n) return result.push(temp)
+
+      if (left < n) {
+        dfs(temp + dict[0], left+1, right)
+      }
+      if (right < n) {
+        dfs(temp + dict[1], left, right+1)
+      }
+    }
+
+    dfs('', 0, 0)
+
+    console.log(result)
+    return result
+  };
+
+  generateParenthesis(3)
+</script>
+</html>
