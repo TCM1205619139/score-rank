@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {string} digits
+   * @return {string[]}
+   */
+  var letterCombinations = function (digits) {
+    const dict = [
+      '',
+      '',
+      ['a', 'b', 'c'],
+      ['d', 'e', 'f'],
+      ['g', 'h', 'i'],
+      ['j', 'k', 'l'],
+      ['m', 'n', 'o'],
+      ['p', 'q', 'r', 's'],
+      ['t', 'u', 'v'],
+      ['w', 'x', 'y', 'z']
+    ]
+
+    let result = []
+
+    const dfs = (str, remain) => {
+      if (remain.length === 0) return result.push(str)
+      const number = remain[0]
+      const keys = dict[number]
+
+      for (let i = 0; i < keys.length; i++) {
+        dfs(str+keys[i], remain.slice(1))
+      }
+    }
+
+    dfs('', digits)
+
+    console.log(result.filter(Boolean))
+    return result.filter(Boolean)
+  };
+
+  letterCombinations("")
+</script>
+</html>
