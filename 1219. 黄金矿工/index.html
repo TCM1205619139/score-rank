@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[][]} grid
+   * @return {number}
+   */
+  var getMaximumGold = function(grid) {
+    let result = 0
+    const rowN = grid.length
+    const colN = grid[0].length
+
+    const dfs = (row, col, total) => {
+      if (
+        row > rowN - 1 ||
+        row < 0 ||
+        col > colN - 1 ||
+        col < 0
+      ) {
+        result = Math.max(result, total)
+        return
+      }
+      if (grid[row][col] === 0) {
+        result = Math.max(result, total)
+        return
+      }
+
+      const tmp = grid[row][col]
+      grid[row][col] = 0
+      dfs(row + 1, col, total + tmp)
+      dfs(row - 1, col, total + tmp)
+      dfs(row, col + 1, total + tmp)
+      dfs(row, col - 1, total + tmp)
+      grid[row][col] = tmp
+    }
+
+    for (let row = 0; row < rowN; row++) {
+      for (let col = 0; col < colN; col++) {
+        if (grid[row][col] === 0) continue
+        // 搜寻起点
+        dfs(row, col, 0)
+      }
+    }
+
+    console.log(result)
+    return result
+  };
+
+  getMaximumGold([[0,6,0],[5,8,7],[0,9,0]])
+</script>
+</html>
