@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[]} nums
+   * @return {number[][]}
+   */
+  var findSubsequences = function(nums) {
+    let result = []
+
+    const dfs = (temp, start) => {
+      if (temp.length >= 2) {
+        result.push(temp)
+      }
+      const obj = {}
+      for (let i = start; i < nums.length; i++) {
+        if (temp.length > 0 && temp[temp.length - 1] > nums[i]) {
+          continue
+        }
+        obj[nums[i]] = (obj[nums[i]] || 0)
+        if (!obj[nums[i]]) {
+          dfs([...temp, nums[i]], i+1)
+        }
+        obj[nums[i]]++
+      }
+    }
+
+    dfs([], 0)
+
+    console.log(result)
+    return result
+  };
+
+  // findSubsequences([4,6,7,7])
+  findSubsequences([4,4,3,2,1])
+</script>
+</html>
