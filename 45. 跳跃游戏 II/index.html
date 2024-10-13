@@ -14,34 +14,36 @@
    */
   var jump = function(nums) {
     let step = 0
-    const dp = (index) => {
-      if (index >= nums.length - 1) return
-      if (nums[index] + index >= nums.length - 1) {
-        step++
-        return
-      }
-      let maxValueIndex = index + 1
-      let maxValue = nums[maxValueIndex]
+    let max = 0
+    let index = 0
 
-      for (let i=1; i<=nums[index]; i++) {
-        if (i + index >= nums.length) break
-        if (maxValue <= nums[index + i] + i) {
-          maxValueIndex = index+i
-          maxValue = nums[maxValueIndex] + i
+    while (max < nums.length - 1) {
+      const temp = nums.slice(index + 1, nums[index] + index + 1)
+      const maxItem = temp.reduce((prev, cur, index) => {
+        if (cur + index >= prev.idx + prev.val) {
+          prev = {
+            val: cur,
+            idx: index
+          }
         }
-      }
 
+        return prev
+      }, { val: temp[0], idx: 0 })
+
+      max = nums[index] + index
+      index = maxItem.idx + index + 1
       step++
-      dp(maxValueIndex)
     }
 
-    dp(0)
+    console.log(step)
     return step
-  };
+  }
 
-  // console.log(jump([2,3,1,1,4]))
-  // console.log(jump([1, 2, 3]))
-  // console.log(jump([0]))
-  console.log(jump([2, 3, 1]))
+  jump([2,3,1,1,4])
+  jump([1, 2, 3])
+  jump([1,1,1,1])
+  jump([2, 3, 1])
+  jump([5,9,3,2,1,0,2,3,3,1,0,0])
+  jump([7,0,9,6,9,6,1,7,9,0,1,2,9,0,3])
 </script>
 </html>
