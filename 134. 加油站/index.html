@@ -30,19 +30,16 @@
       return startIndex
     }
 
-    for (let i = 0; i < reciprocal.length; i++) {
-      if (reciprocal[i] < 0) continue
-
-      let remain = 0
-      for (let j = i; j < reciprocal.length; j++) {
-        remain += reciprocal[j]
-        if (remain < 0) break
-        if (j === reciprocal.length - 1) {
-          startIndex = i
-        }
+    let k = 0
+    let remain = 0
+    startIndex = k
+    while (k < reciprocal.length) {
+      remain += reciprocal[k]
+      if (remain < 0) {
+        remain = 0
+        startIndex = k+1
       }
-
-      if (startIndex !== -1) break
+      k++
     }
     console.log(startIndex)
 
