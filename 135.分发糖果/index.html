@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[]} ratings
+   * @return {number}
+   */
+  var candy = function(ratings) {
+    const candies = new Array(ratings.length).fill(0)
+
+    candies[0] = 1
+
+    for(let i=1; i<ratings.length; i++) {
+      if (ratings[i] > ratings[i-1]) {
+        candies[i] = candies[i-1] + 1
+      } else {
+        candies[i] = 1
+      }
+    }
+
+    candies[ratings.length - 1] = Math.max(
+      candies[ratings.length - 1],
+      1
+    )
+    for(let i=ratings.length-1; i>=1; i--) {
+      if (ratings[i-1] > ratings[i]) {
+        candies[i-1] = Math.max(
+          candies[i-1],
+          candies[i] + 1
+        )
+      } else {
+        candies[i-1] = Math.max(
+          candies[i-1],
+          1
+        )
+      }
+    }
+
+    return candies.reduce((prev, cur) => {
+      prev += cur
+      return prev
+    })
+  };
+
+  candy([1,0,2])
+</script>
+</html>
