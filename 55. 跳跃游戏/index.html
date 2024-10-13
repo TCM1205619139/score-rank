@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[]} nums
+   * @return {boolean}
+   */
+  var canJump = function(nums) {
+    const dict = new Array(nums.length).fill(false)
+
+    dict[0] = true
+    for (let i = 0; i < nums.length - 1; i++) {
+      const limit = nums[i]
+      if (!dict[i]) break
+      for (let j = 0; j < limit; j++) {
+        const index = i + j + 1
+        if (index >= dict.length) break
+        dict[index] = true
+      }
+    }
+
+    console.log(dict)
+    return dict[nums.length - 1]
+  };
+
+  canJump([2,3,1,1,4])
+  canJump([3,2,1,0,4])
+</script>
+</html>
