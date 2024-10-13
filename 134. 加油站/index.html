@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[]} gas
+   * @param {number[]} cost
+   * @return {number}
+   */
+  var canCompleteCircuit = function(gas, cost) {
+    let reciprocal = new Array(gas.length).fill(0)
+    let startIndex = -1
+
+    for (let i = gas.length - 1; i >= 0; i--) {
+      reciprocal[i] = gas[i] - cost[i]
+    }
+    console.log(reciprocal)
+    const round = reciprocal.reduce((prev, cur) => {
+      prev += cur
+
+      return prev
+    }, 0)
+    if (round < 0) {
+      return startIndex
+    }
+
+    for (let i = 0; i < reciprocal.length; i++) {
+      if (reciprocal[i] < 0) continue
+
+      let remain = 0
+      for (let j = i; j < reciprocal.length; j++) {
+        remain += reciprocal[j]
+        if (remain < 0) break
+        if (j === reciprocal.length - 1) {
+          startIndex = i
+        }
+      }
+
+      if (startIndex !== -1) break
+    }
+    console.log(startIndex)
+
+    return startIndex
+  };
+
+  canCompleteCircuit([2,3,4], [3,4,3])
+  canCompleteCircuit([1,2,3,4,5], [3,4,5,1,2])
+</script>
+</html>
