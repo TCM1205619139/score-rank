@@ -13,24 +13,24 @@
    * @return {boolean}
    */
   var canJump = function(nums) {
-    const dict = new Array(nums.length).fill(false)
+    let max = 0
 
-    dict[0] = true
+
     for (let i = 0; i < nums.length - 1; i++) {
-      const limit = nums[i]
-      if (!dict[i]) break
-      for (let j = 0; j < limit; j++) {
-        const index = i + j + 1
-        if (index >= dict.length) break
-        dict[index] = true
+      if (nums[i] === 0 && max <= i) {
+        break
       }
+      max = Math.max(nums[i] + i, max)
     }
 
-    console.log(dict)
-    return dict[nums.length - 1]
+    console.log(max, max >= nums.length - 1)
+
+    return max >= nums.length - 1
+
+    // return dp[nums.length - 1] > 0
   };
 
   canJump([2,3,1,1,4])
-  canJump([3,2,1,0,4])
+  canJump([3,2,1,0,1,4])
 </script>
 </html>
