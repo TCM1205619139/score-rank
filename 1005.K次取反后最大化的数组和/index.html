@@ -14,23 +14,45 @@
    * @return {number}
    */
   var largestSumAfterKNegations = function(nums, k) {
-    let sum = nums.reduce((prev, cur) => {
-      prev += cur
-      return prev
-    }, 0)
-    while (k > 0) {
-      const min = Math.min(...nums)
-      const index = nums.indexOf(min)
+    nums.sort((a, b) => a - b)
+    const less0 = []
+    const more0 = []
 
-      nums[index] = -min
-      sum += nums[index] * 2
+    for (let i = 0; i < nums.length; i++) {
+      if (nums[i] >= 0) {
+        more0.push(nums[i])
+      } else {
+        less0.push(nums[i])
+      }
+    }
+
+    while (less0.length > 0 && k > 0) {
+      const num = -less0.shift()
+      if (num > more0[0]) {
+        more0.push(num)
+      } else {
+        more0.unshift(num)
+      }
       k--
     }
+
+    while (k > 0) {
+      more0[0] = -more0[0]
+      k--
+    }
+
+    let sum = [...less0, ...more0].reduce((prev, cur) => {
+      prev += cur
+
+      return prev
+    }, 0)
 
     console.log(sum)
     return sum
   };
 
+  largestSumAfterKNegations([-2,5,0,2,-2], 3)
+  largestSumAfterKNegations([3,-1,0,2], 3)
   largestSumAfterKNegations([4, 2, 3], 1)
 </script>
 </html>
