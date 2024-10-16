@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[]} bills
+   * @return {boolean}
+   */
+  var lemonadeChange = function(bills) {
+    const BASE = 5
+    const FIVE = []
+    const TEN = []
+    const TWITTEN = []
+    if (bills[0] > BASE) return false
+
+    let flag = true
+
+    for (let i = 0; i < bills.length; i++) {
+      if (bills[i] === BASE) {
+        FIVE.push(bills[i])
+      } else if (bills[i] === BASE * 2) {
+        flag = FIVE.length > 0
+        TEN.push(bills[i])
+        FIVE.pop()
+      } else {
+        if (TEN.length > 0 && FIVE.length > 0) {
+          TEN.pop()
+          FIVE.pop()
+        } else if (FIVE.length > 3) {
+          FIVE.pop()
+          FIVE.pop()
+          FIVE.pop()
+        } else {
+          flag = false
+        }
+        TWITTEN.push(bills[i])
+      }
+      if (!flag) {
+        break
+      }
+    }
+
+    console.log(flag)
+
+    return flag
+  };
+
+  lemonadeChange([5,5,5,10,20])
+</script>
+</html>
