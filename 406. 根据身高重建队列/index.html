@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[][]} people
+   * @return {number[][]}
+   */
+  var reconstructQueue = function(people) {
+    people.sort((a, b) => a[1] - b[1])
+    people.sort((a, b) => b[0] - a[0])
+
+    for (let i = 0; i < people.length; i++) {
+      if (people[i][1] >= i) {
+        continue
+      }
+
+      const targetIndex = people[i][1]
+      const target = people[targetIndex]
+      let temp
+      if (target[0] > people[i][0]) {
+        temp = people[i]
+        people.splice(i, 1)
+        people.splice(targetIndex, 0, temp)
+      }
+    }
+
+    console.log(people)
+    return people
+  };
+
+  reconstructQueue([[7,0],[4,4],[7,1],[5,0],[6,1],[5,2]])
+</script>
+</html>
