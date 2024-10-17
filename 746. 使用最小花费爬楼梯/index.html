@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[]} cost
+   * @return {number}
+   */
+  var minCostClimbingStairs = function(cost) {
+    const dp = new Array(cost.length + 1).fill(0)
+
+    dp[0] = dp[1] = 0
+    dp[2] = Math.min(cost[0], cost[1])
+
+    for (let i=2; i<=cost.length; i++) {
+      dp[i] = Math.min(
+        dp[i-1] + cost[i-1],
+        dp[i-2] + cost[i-2]
+      )
+    }
+
+    console.log(dp)
+    return dp[cost.length]
+  };
+
+  minCostClimbingStairs([10,15,20])
+</script>
+</html>
