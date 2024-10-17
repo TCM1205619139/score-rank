@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[][]} obstacleGrid
+   * @return {number}
+   */
+  var uniquePathsWithObstacles = function(obstacleGrid) {
+    const m = obstacleGrid.length
+    const n = obstacleGrid[0].length
+    const dp = new Array(m).fill(0).map(() => new Array(n).fill(1))
+
+    if (obstacleGrid[0][0] === 1) {
+      return 0
+    }
+    let flag = false
+    for (let i = 0; i < m; i++) {
+      if (obstacleGrid[i][0] === 1) {
+        flag = true
+      }
+      if (flag) {
+        dp[i][0]--
+      }
+    }
+    flag = false
+    for (let j = 0; j < n; j++) {
+      if (obstacleGrid[0][j] === 1) {
+        flag = true
+      }
+      if (flag) {
+        dp[0][j]--
+      }
+    }
+
+    for (let i = 1; i < m; i++) {
+      for (let j = 1; j < n; j++) {
+        if (obstacleGrid[i][j] === 1) {
+          dp[i][j] = 0
+          continue
+        }
+        dp[i][j] = dp[i-1][j] + dp[i][j-1]
+      }
+    }
+
+    console.log(dp)
+    return dp[m-1][n-1]
+  };
+
+  uniquePathsWithObstacles([[0,0,0],[0,1,0],[0,0,0]])
+  uniquePathsWithObstacles([[0,1],[0,0]])
+  // uniquePathsWithObstacles([[1,0]])
+</script>
+</html>
