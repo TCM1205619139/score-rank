@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+const fn = (values, weight, k) => {
+  const length = values.length
+  const dp = new Array(length).fill(0).map(() => new Array(k+1).fill(0))
+
+  // dp[i][j] 代表 取 i 放入 容量为 j 的背包中的最大价值
+
+  for (let j = 0; j <= k; j++) {
+    if (weight[0] <= j) {
+      dp[0][j] = values[0]
+    }
+  }
+
+  for (let i = 0; i < length; i++) {
+    if (weight[i] <= 0) {
+      dp[i][0] = values[i]
+    }
+  }
+
+  for (let i = 1; i < length; i++) {
+    for (let j = 1; j <= k; j++) {
+      if (weight[i]<=j) {
+        dp[i][j] = Math.max(dp[i-1][j], dp[i-1][j-weight[i]] + values[i])
+      } else {
+        dp[i][j] = dp[i-1][j]
+      }
+    }
+  }
+  console.log(dp)
+  console.log(dp[length-1][k])
+  return dp[length-1][k]
+}
+
+fn([15,20,30], [0,3,4], 5)
+</script>
+</html>
