@@ -13,49 +13,27 @@
    * @return {boolean}
    */
   var canPartition = function(nums) {
-    const left = []
-    const right = []
-    const dfs = (l, r, start) => {
-      if (l.length + r.length === nums.length) {
-        if (l.length !== 0 && r.length !== 0) {
-          left.push(l)
-          right.push(r)
-        }
-        return
-      }
-      for (let i = start; i < nums.length; i++) {
-        dfs([...l, nums[i]], [...r], i+1)
-        dfs([...l], [...r, nums[i]], i+1)
-      }
-    }
-
-    dfs([], [], 0)
-    console.log(left)
-    console.log(right)
-    const leftSums = left.map(l => {
-      return l.reduce((prev, cur) => {
-        prev += cur
-        return prev
-      }, 0)
-    })
-    const rightSums = right.map(l => {
-      return l.reduce((prev, cur) => {
-        prev += cur
-        return prev
-      }, 0)
-    })
+    const target = nums.reduce((prev, cur) => {
+      prev += cur
+      return prev
+    }, 0) / 2
 
     let flag = false
-    for (let i = 0; i < leftSums.length; i++) {
-      if (leftSums[i] === rightSums[i]) {
+    const dfs = (total, start) => {
+      if (total === target) {
         flag = true
-        break
+      }
+      if (flag) return
+      for (let i = start; i < nums.length; i++) {
+        if (flag) break
+        dfs(total + nums[i], i+1)
       }
     }
 
-    console.log(leftSums)
-    console.log(rightSums)
+    dfs(0, 0)
     console.log(flag)
+
+    return flag
   };
 
   // canPartition([1,5,5,11])
