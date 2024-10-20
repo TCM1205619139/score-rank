@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[]} nums
+   * @return {number[][]}
+   */
+  var subsetsWithDup = function(nums) {
+    const collection = []
+
+    nums.sort((a, b) => a - b)
+    const dfs = (tem, start, used) => {
+      collection.push(tem)
+      if (start >= nums.length) {
+        return
+      }
+      for (let i = start; i < nums.length; i++) {
+        if (i > 0 && nums[i] === nums[i-1] && used[i-1] === 0) {
+          continue
+        }
+        used[i] = 1
+        dfs([...tem, nums[i]], i+1, used)
+        used[i] = 0
+      }
+    }
+
+    dfs([], 0, new Array(nums.length).fill(0))
+
+    console.log(collection)
+
+    return collection
+  };
+
+  subsetsWithDup([1,5,5,11])
+</script>
+</html>
