@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {string} s
+   * @return {number[]}
+   */
+  var partitionLabels = function(s) {
+    const result = []
+    const section = []
+
+    for (let i = 0; i < s.length; i++) {
+      section.push([i, s.lastIndexOf(s[i])])
+    }
+    section.sort((a,b) => a[0]-b[0])
+
+    let base = section[0]
+    for (let i = 0; i < section.length; i++) {
+      const cur = section[i]
+      if (cur[0] > base[1]) {
+        result.push(base[1]-base[0] + 1)
+        base = cur
+      } else {
+        base = [base[0], Math.max(base[1], cur[1])]
+      }
+    }
+    result.push(s.length - base[0])
+    console.log(section)
+    console.log(result)
+    return result
+  };
+
+  partitionLabels("ababcbacadefegdehijhklij")
+</script>
+</html>
