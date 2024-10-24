@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number} n
+   * @return {number}
+   */
+  var monotoneIncreasingDigits = function(n) {
+    const s = n.toString()
+    const length = s.length
+    let result = s[s.length-1]
+
+    for (let i = length-2; i >= 0; i--) {
+      const next = s[i+1]
+      const cur = s[i]
+      if (cur > result[0]) {
+        result = `${cur - 1}${new Array(result.length).fill('9').join('')}`
+      } else {
+        result = cur + result
+      }
+    }
+    result = Number(result)
+    console.log(result)
+    return result
+  };
+
+  monotoneIncreasingDigits(10)
+  monotoneIncreasingDigits(1234)
+  monotoneIncreasingDigits(332)
+</script>
+</html>
