@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[][]} intervals
+   * @return {number[][]}
+   */
+  var merge = function(intervals) {
+    intervals.sort((a,b) => a[0]-b[0])
+
+    const result = []
+
+    let base = intervals[0]
+    for (let i = 0; i < intervals.length; i++) {
+      const cur = intervals[i]
+
+      if (cur[0] > base[1]) {
+        result.push(base)
+        base = cur
+      } else {
+        base = [base[0], Math.max(base[1], cur[1])]
+      }
+    }
+    result.push(base)
+
+    console.log(result)
+    return result
+  };
+
+  merge([[1,3],[2,6],[8,10],[15,18]])
+</script>
+</html>
