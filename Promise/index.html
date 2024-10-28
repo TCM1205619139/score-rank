@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  const PENDING = 'pending'
+  const FULFILLED = 'fulfilled'
+  const REJECTED = 'rejected'
+
+  class Commitment {
+    status = PENDING
+    value = null
+    reason = null
+    onFulfilledCbs = []
+    onRejectedCbs = []
+
+    constructor(executor) {
+      const resolve = (value) => {
+        if (this.status === PENDING) {
+          this.status = FULFILLED
+          this.value = value
+          this.onFulfilledCbs.forEach(cb => cb(value))
+        }
+      }
+      const reject = (reason) => {
+        if (this.status === PENDING) {
+          this.status = REJECTED
+          this.reason = reason
+          this.onRejectedCbs.forEach(cb => cb(reason))
+        }
+      }
+      try {
+        executor(resolve, reject)
+      } catch (e) {
+        reject(e)
+      }
+    }
+
+    static all(promises) {
+      return new Commitment((resolve, reject) => {
+        const results = []
+        let completedCount = 0
+
+        promises.forEach((promise, index) => {
+          Commitment.resolve(promise).then((value) => {
+            results[index] = value
+            completedCount++
+
+            if (completedCount === promises.length) {
+              resolve(results)
+            }
+          }).catch(reject)
+        })
+
+        if (promises.length === 0) {
+          return Promise.resolve(results)
+        }
+      })
+    }
+
+    static race(promises) {
+      return new Commitment((resolve, reject) => {
+        promises.forEach((promise) => {
+          Commitment.resolve(promise).then(resolve).catch(reject)
+        })
+      })
+    }
+
+    static resolve(value) {
+      if (value instanceof Commitment) return value
+      return new Commitment((resolve) => {
+        resolve(value)
+      })
+    }
+
+    static reject(reason) {
+      return new Commitment((resolve, reject) => {
+        reject(reason)
+      })
+    }
+
+    then(onFulfilled, onRejected) {
+      onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : () => {
+      }
+      onRejected = typeof onRejected === 'function' ? onRejected : () => {
+      }
+
+      return new Commitment((resolve, reject) => {
+        if (this.status === FULFILLED) {
+          queueMicrotask(() => {
+            try {
+              resolve(onFulfilled(this.value))
+            } catch (e) {
+              reject(e)
+            }
+          })
+        } else if (this.status === REJECTED) {
+          queueMicrotask(() => {
+            try {
+              resolve(onRejected(this.reason))
+            } catch (e) {
+              reject(e)
+            }
+          })
+        } else {
+          this.onFulfilledCbs.push(() => {
+            queueMicrotask(() => {
+              try {
+                resolve(onFulfilled(this.value))
+              } catch (error) {
+                reject(error)
+              }
+            })
+          })
+          this.onRejectedCbs.push(() => {
+            queueMicrotask(() => {
+              try {
+                resolve(onRejected(this.reason))
+              } catch (error) {
+                reject(error)
+              }
+            })
+          })
+        }
+      })
+    }
+
+    catch(fn) {
+      return this.then(undefined, fn)
+    }
+
+    finally(fn) {
+      return this.then(
+        (value) => {
+          return Commitment.resolve(fn()).then(() => value)
+        },
+        (reason) => {
+          return Commitment.resolve(fn()).then(() => {
+            throw reason
+          })
+        })
+    }
+  }
+
+  new Commitment((resolve, reject) => {
+    console.log(1)
+    setTimeout(() => {
+      resolve(2)
+    })
+  }).then((num) => {
+    console.log(num)
+    return num + 1
+  }).then((num) => {
+    console.log(a + 1)
+    console.log(num)
+  }).catch(error => {
+    console.log('error >>>', error)
+  }).finally()
+
+  Commitment.all([
+    (() => {
+      return Promise.resolve(111)
+    })(),
+    (() => {
+      return 222
+    })()
+  ]).then((values) => {
+    console.log(values[0])
+  })
+
+  console.log('---------------------')
+</script>
+</html>
