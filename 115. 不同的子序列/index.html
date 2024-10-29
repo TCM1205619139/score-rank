@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {string} s
+   * @param {string} t
+   * @return {number}
+   */
+  var numDistinct = function(s, t) {
+    const dict = []
+    const dfs = (start, str) => {
+      if (str.length >= t.length) {
+        dict.push(str)
+        return
+      }
+      if (start === s.length) {
+        return
+      }
+      for (let i = start; i < s.length; i++) {
+        dfs(i+1, str + s[i])
+      }
+    }
+
+    dfs(0, '')
+
+    let num = 0
+    for (let i = 0; i < dict.length; i++) {
+      if (dict[i] === t) num++
+    }
+    console.log(dict, num)
+  };
+
+  // numDistinct("rabbbit", "rabbit")
+  numDistinct("babgbag", "bag")
+</script>
+</html>
