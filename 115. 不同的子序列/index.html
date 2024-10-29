@@ -14,30 +14,38 @@
    * @return {number}
    */
   var numDistinct = function(s, t) {
-    const dict = []
-    const dfs = (start, str) => {
-      if (str.length >= t.length) {
-        dict.push(str)
-        return
-      }
-      if (start === s.length) {
-        return
-      }
-      for (let i = start; i < s.length; i++) {
-        dfs(i+1, str + s[i])
+    if (s.length < t.length) return 0
+    const dp = new Array(s.length).fill(0).map(() => new Array(t.length).fill(0))
+
+    for (let i = 0; i < s.length; i++) {
+      if (s[i] === t[0]) {
+        if (i === 0) {
+          dp[i][0] = 1
+        } else {
+          dp[i][0] = dp[i-1][0] + 1
+        }
+      } else {
+        if (i > 0) {
+          dp[i][0] = dp[i-1][0]
+        }
       }
     }
 
-    dfs(0, '')
-
-    let num = 0
-    for (let i = 0; i < dict.length; i++) {
-      if (dict[i] === t) num++
+    for (let i = 1; i < s.length; i++) {
+      for (let j = 1; j < t.length; j++) {
+        if (s[i] === t[j] && i >= j) {
+          dp[i][j] = dp[i-1][j-1] + dp[i-1][j]
+        } else {
+          dp[i][j] = dp[i-1][j]
+        }
+      }
     }
-    console.log(dict, num)
+
+    console.log(dp)
+    return dp[s.length-1][t.length - 1]
   };
 
-  // numDistinct("rabbbit", "rabbit")
+  numDistinct("rabbbit", "rabbit")
   numDistinct("babgbag", "bag")
 </script>
 </html>
