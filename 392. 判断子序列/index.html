@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {string} s
+   * @param {string} t
+   * @return {boolean}
+   */
+  var isSubsequence = function(s, t) {
+    let flag = false
+    if (s.length > t.length) return flag
+    const dfs = (index, string) => {
+      if (index === s.length) {
+        flag = true
+      }
+      if (string.length === 0) return
+      for (let i = 0; i < string.length; i++) {
+        if (s[index] === string[i]) {
+          dfs(index+1, string.slice(i+1))
+          break
+        }
+      }
+    }
+
+    dfs(0, t.slice(0))
+
+    console.log(flag)
+  };
+
+  isSubsequence("abc", "ahbgdc")
+</script>
+</html>
