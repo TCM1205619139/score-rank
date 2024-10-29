@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[]} nums1
+   * @param {number[]} nums2
+   * @return {number}
+   */
+  var maxUncrossedLines = function (nums1, nums2) {
+    let res = 0
+
+    const dfs = (nums1, nums2, value) => {
+      for (let i = 0; i < nums1.length; i++) {
+        const j = nums2.indexOf(nums1[i])
+        if (j === -1) {
+          continue
+        }
+
+        dfs(nums1.slice(i + 1), nums2.slice(j + 1), value + 1)
+      }
+      res = Math.max(res, value)
+    }
+
+    dfs(nums1, nums2, 0)
+
+    console.log(res)
+  }
+
+  // maxUncrossedLines([1,4,2], [1,2,4])
+  // maxUncrossedLines([1, 2], [1, 1])
+  maxUncrossedLines([2,1], [1,2,1])
+</script>
+</html>
