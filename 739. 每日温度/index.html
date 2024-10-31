@@ -17,21 +17,21 @@
     const stack = [0]
 
     for (let i = 1; i < temperatures.length; i++) {
-      let index = stack[0]
+      let index = stack[stack.length-1]
       let top = temperatures[index]
       const cur = temperatures[i]
 
       if (cur <= top) {
-        stack.unshift(i)
+        stack.push(i)
       }
       if (cur > top) {
         while (cur > top && stack.length > 0) {
           result[index] = i - index
-          stack.shift()
-          index = stack[0]
+          stack.pop()
+          index = stack[stack.length - 1]
           top = temperatures[index]
         }
-        stack.unshift(i)
+        stack.push(i)
       }
     }
 
