@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {number[]} temperatures
+   * @return {number[]}
+   */
+  var dailyTemperatures = function (temperatures) {
+    const stack = []
+    const result = []
+
+    for (let i = temperatures.length-1; i >= 0; i--) {
+      const cur = temperatures[i]
+      const index = stack.findIndex(item => item > cur)
+
+      result.unshift(index + 1)
+      stack.unshift(cur)
+    }
+    console.log(stack, result)
+    return result
+  }
+
+  dailyTemperatures([73, 74, 75, 71, 69, 72, 76, 73])
+</script>
+</html>
