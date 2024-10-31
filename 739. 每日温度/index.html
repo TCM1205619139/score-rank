@@ -13,15 +13,27 @@
    * @return {number[]}
    */
   var dailyTemperatures = function (temperatures) {
-    const stack = []
     const result = []
+    const stack = []
 
     for (let i = temperatures.length-1; i >= 0; i--) {
       const cur = temperatures[i]
-      const index = stack.findIndex(item => item > cur)
 
-      result.unshift(index + 1)
-      stack.unshift(cur)
+      while (stack.length > 0) {
+        const index = stack[0]
+        if (cur >= temperatures[index]) {
+          stack.shift()
+          continue
+        } else {
+          result.unshift(index - i)
+          stack.unshift(i)
+          break
+        }
+      }
+      if (stack.length === 0) {
+        stack.unshift(i)
+        result.unshift(0)
+      }
     }
     console.log(stack, result)
     return result
