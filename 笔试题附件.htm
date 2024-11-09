@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZhuoZhuo</title>
+</head>
+
+<body>
+  <script>
+    // 下列常量不可修改
+    const testStr = '感谢参与ZhuoZhuo前端招聘😄';
+    const imageFileName = 'test.png';
+    const txtFileName = 'test.txt';
+    const imageWidth = 3;
+    const imageHeight = 4;
+
+    // 补全下列函数逻辑
+    // 相关参考链接
+    // https://developer.mozilla.org/en-US/docs/Web/API/ImageData
+    // https://en.wikipedia.org/wiki/Alpha_compositing
+
+    function getImageArrayByString(str) {
+      // TODO 将传入字符串转为像素数组，格式要求请参考函数`downloadImage`
+      // const blob = new Blob([str])
+      // console.log(blob)
+      // const sBuffer = await blob.arrayBuffer()
+      // const sData = new Uint8Array(sBuffer)
+      //
+      // const buffer = new ArrayBuffer(4 * imageWidth * imageHeight);
+      // const view = new Uint8Array(buffer);
+      // view.set(sData)
+      //
+      // const clampedArray = new Uint8ClampedArray(view, imageWidth, imageHeight)
+
+      // return clampedArray
+      const encoder = new TextEncoder();
+      const byteArray = encoder.encode(str);
+
+      const temp = []
+      for (let i = 0; i < byteArray.length; i+=3) {
+        temp.push(byteArray[i], byteArray[i+1], byteArray[i+2], 255)
+      }
+
+      return new Uint8ClampedArray(temp);
+    }
+    function downloadTxt(content, fileName) {
+      // TODO 触发浏览器下载，下载文件内容为传入的content内容，格式是fileName指定格式
+      const blob = new Blob([content])
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+
+      link.setAttribute('href', url)
+      link.setAttribute('download', fileName)
+      link.click()
+    }
+    function downloadImage({ fileName, data, width, height }) {
+      const uintList = new Uint8ClampedArray(data); // Array to Uint8ClampedArray
+      const imgData = new ImageData(uintList, width, height); // create new ImageData
+      const canvas = document.createElement("canvas");
+      canvas.width = width
+      canvas.height = height
+      const ctx = canvas.getContext("2d");
+
+      ctx.putImageData(imgData, width, height)
+      const url = canvas.toDataURL()
+      const link = document.createElement('a')
+
+      link.setAttribute('href', url)
+      link.setAttribute('download', fileName)
+
+      link.click()
+    }
+    function pixToData(pixList) {
+      const res = [];
+      for (let i = 0; i < pixList.length; i += 4) {
+        res.push(pixList[i], pixList[i + 1], pixList[i + 2]);
+      }
+      return res;
+    }
+    function getStringByImageArray(list) {
+      // TODO 将像素数组还原为字符串
+      const data = pixToData(list);
+      const decoder = new TextDecoder()
+      const byteArray = new Uint8Array(data)
+
+      return decoder.decode(byteArray)
+    }
+
+    // 下列代码不可修改
+    // 执行函数，验证函数功能
+
+    // 字符串转像素数组（30分）
+    const pixData = getImageArrayByString(testStr);
+    console.log(pixData);
+
+    // 像素数组绘制PNG图片并下载（30分）
+    downloadImage({ fileName: imageFileName, data: pixData, width: imageWidth, height: imageHeight });
+
+    // // 像素数组还原为字符串（30分）
+    const newStr = getStringByImageArray(pixData);
+    console.log(newStr);
+
+    // // 下载txt文件，文件内容为字符串（10分）
+    downloadTxt(newStr, txtFileName);
+  </script>
+</body>
+
+</html>
