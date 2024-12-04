@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /**
+   * @param {string[]} strs
+   * @return {string[][]}
+   */
+  var groupAnagrams = function(strs) {
+    if (strs.length === 0) return []
+    const stringifys = []
+    const hash = Object.create(null)
+
+    for (let i = 0; i < strs.length; i++) {
+      const str = strs[i]
+
+      const sort = str.split('').map(char => char.charCodeAt()).sort((a, b) => a-b)
+      stringifys.push(JSON.stringify(sort))
+    }
+
+    for (let i = 0; i < stringifys.length; i++) {
+      const key = stringifys[i]
+      if (hash[key]) {
+        hash[key].push(strs[i])
+      } else {
+        hash[key] = [strs[i]]
+      }
+    }
+
+    console.log(Object.values(hash))
+
+    return Object.values(hash)
+  };
+
+  groupAnagrams(["eat","tea","tan","ate","nat","bat"])
+</script>
+</html>
